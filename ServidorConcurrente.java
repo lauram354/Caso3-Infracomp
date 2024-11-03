@@ -18,7 +18,7 @@ public class ServidorConcurrente implements Runnable{
             BufferedReader lector = new BufferedReader(new InputStreamReader(socketCliente.getInputStream()));
             
             System.out.println(lector.readLine());
-            escritor.println("Sembrar panico");
+            escritor.println("Respuesta de serv concurrente");
             ProtocoloServidor.ejecucion(lector, escritor);
         }catch (Exception e) {
             e.printStackTrace();

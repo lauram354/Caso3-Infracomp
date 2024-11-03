@@ -37,6 +37,7 @@ public class Servidor {
                         System.out.println("Número no valido. Intente de nuevo");
                     }
                 }
+                inMenu = false;
                 // TODO: Crear servidores y realizar proceso 
 
             }else if(option.equals("9")){
@@ -45,6 +46,7 @@ public class Servidor {
             }
         }
         System.out.println(".....................................................................");
+        reader.close();
     }
 
     public static void iniciarServidor(int threads) throws IOException{
@@ -67,7 +69,7 @@ public class Servidor {
                     BufferedReader lector = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                     
                     System.out.println(lector.readLine());
-                    escritor.println("Sembrar panico");
+                    escritor.println("Servidor mono");
                     ProtocoloServidor.ejecucion(lector, escritor);
                     escritor.close();
                     lector.close();
@@ -76,6 +78,7 @@ public class Servidor {
                     e.printStackTrace();
                 }
             }
+            ss.close();
 
         }else{
             System.out.println("Inicia Servidor multithread");

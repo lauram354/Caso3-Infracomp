@@ -10,8 +10,8 @@ public class ProtocoloServidor{
         String input;
         String output;
         input = entrada.readLine();
-
-        System.out.println("Cual es el ceral favorito de un surfista? ");
+        System.out.println(input);
+        System.out.println("Ejecución servidor ");
     }
 
     

@@ -4,10 +4,10 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class ClienteConcurrente extends Thread{
+public class ClienteNew extends Thread{
     private int id;
 
-    public ClienteConcurrente(int id){
+    public ClienteNew(int id){
         this.id = id;
     }
 

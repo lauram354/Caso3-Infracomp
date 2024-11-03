@@ -2,8 +2,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Cliente {
     public static final int PUERTO = 3400;
@@ -28,12 +31,14 @@ public class Cliente {
                         System.out.println("Número no valido. Intente de nuevo");
                     }
                 }
+                inMenu = false;
             }else if(option.equals("9")){
                 System.out.println("Gracias por usar el sistema");
                 inMenu= false;
             }
         }
         System.out.println(".....................................................................");
+        reader.close();
 		
 	}
 
@@ -56,13 +61,18 @@ public class Cliente {
 	
             BufferedReader entrada = new BufferedReader(new InputStreamReader(System.in));
             ProtocoloCliente.ejecucion(entrada, lector, escritor);
-            escritor.println("Hola servidor, ¿Qué hace un vampiro en un tractor?");
             System.out.println(lector.readLine());
             
             socket.close();
             escritor.close();
             lector.close();
 
+        }else{
+            System.out.println("Inicia Cliente multithread");
+            for (int i=0; i<threads; i++){
+                ClienteConcurrente newCliente = new ClienteConcurrente(i);
+                newCliente.start();
+            }
         }
 
     }
