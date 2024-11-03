@@ -24,7 +24,7 @@ public class Cliente {
                 while (check){
                     System.out.println("Ingrese la cantidad de clientes a ejecutar (1 para proceso iterativo, 4, 8, 32): \n");
                     int clientes = Integer.valueOf(reader.nextLine()); 
-                    if (clientes == 1 || clientes == 4 || clientes == 8 || clientes == 32 ){
+                    if (clientes > 0 ){
                         check = false;
                         iniciarCliente(clientes);
                     }else{
