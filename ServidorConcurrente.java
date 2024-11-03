@@ -20,6 +20,9 @@ public class ServidorConcurrente implements Runnable{
             System.out.println(lector.readLine());
             escritor.println("Respuesta de serv concurrente");
             ProtocoloServidor.ejecucion(lector, escritor);
+            escritor.close();
+            lector.close();
+            socketCliente.close();
         }catch (Exception e) {
             e.printStackTrace();
         }

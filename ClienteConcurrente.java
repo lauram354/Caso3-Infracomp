@@ -40,7 +40,7 @@ public class ClienteConcurrente extends Thread{
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-            
+        System.out.println("Termino thread " + String.valueOf(id));
     }
     
 }

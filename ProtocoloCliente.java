@@ -8,14 +8,8 @@ public class ProtocoloCliente {
         String user;
 
         user = "Hola :)";
-        System.out.println("Mensaje enviado " + user);
-                
+        System.out.println("Mensaje enviado " + user);     
         salida.println(user);
             
-        if ((servidor = servIn.readLine()) != null){
-                System.out.println(servidor);
-        }
-
-        
     }
 }
