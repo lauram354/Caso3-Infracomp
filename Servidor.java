@@ -18,7 +18,7 @@ public class Servidor {
         boolean inMenu = true;
 
         while (inMenu){
-            System.out.println("Bienvenido, seleccione una de las opciones: \n1. Generar pareja de llaves \n2. Ejecutar \n9. Salir");
+            System.out.println("Bienvenido Servidor, seleccione una de las opciones: \n1. Generar pareja de llaves \n2. Ejecutar \n9. Salir");
             String option = reader.nextLine(); 
             if( option.equals("1")){
                 System.out.println("Generando llaves...");
