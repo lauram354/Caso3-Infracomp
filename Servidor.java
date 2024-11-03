@@ -4,6 +4,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.security.NoSuchAlgorithmException;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -23,6 +24,16 @@ public class Servidor {
             if( option.equals("1")){
                 System.out.println("Generando llaves...");
                 //TODO:Generar la pareja de llaves asimétricas del servidor y almacenarlas en dos archivos
+                try {
+                    ProtocoloServidor.creacionLlaves("RSA");
+                } catch (NoSuchAlgorithmException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                
 
 
             }else if(option.equals("2")){
