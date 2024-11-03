@@ -25,7 +25,8 @@ public class Servidor {
                 System.out.println("Generando llaves...");
                 //TODO:Generar la pareja de llaves asimétricas del servidor y almacenarlas en dos archivos
                 try {
-                    ProtocoloServidor.creacionLlaves("RSA");
+                    Asimetrico.creacionLlaves("RSA");
+                    
                 } catch (NoSuchAlgorithmException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
