@@ -11,13 +11,14 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
-import Algorithms.Asimetrico;
+//import Algorithms.Asimetrico;
+import Algorithms.Simetrico;
 
 public class Servidor {
 
     private static final int PUERTO = 3400;
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
         Scanner reader = new Scanner(System.in); 
         boolean inMenu = true;
 
@@ -27,7 +28,11 @@ public class Servidor {
             if( option.equals("1")){
                 System.out.println("Generando llaves...");
                 //TODO:Generar la pareja de llaves asimétricas del servidor y almacenarlas en dos archivos
+                Simetrico.generarValores();
+
+                /*
                 try {
+                    Simetrico.generarValores();
                     Asimetrico.creacionLlaves("RSA");
                     
                 } catch (NoSuchAlgorithmException e) {
@@ -37,7 +42,7 @@ public class Servidor {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
-                
+                */
 
 
             }else if(option.equals("2")){

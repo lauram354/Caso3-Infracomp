@@ -1,5 +1,8 @@
 package Algorithms;
+import java.io.BufferedReader;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.Key;
@@ -53,5 +56,20 @@ public class Simetrico {
             System.out.print(contenido[i] + " ");
         }
         System.out.print(contenido[i] + " ");
+    }
+
+    public static void generarValores() throws IOException, InterruptedException{
+        Process process = Runtime.getRuntime().exec("C:\\Users\\laura\\Downloads\\OpenSSL-1.1.1h_win32\\openssl dhparam -text 1024");
+        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        String line;
+        StringBuilder output = new StringBuilder();
+	    // Almacena toda la salida para procesarla después
+	    while ((line = reader.readLine()) != null) {
+	        output.append(line).append("\n");
+	    }
+	    reader.close();
+	    process.waitFor();
+        System.out.println(output);
+        
     }
 }
