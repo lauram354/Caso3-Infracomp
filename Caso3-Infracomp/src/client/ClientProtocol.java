@@ -8,10 +8,16 @@ public class ClientProtocol {
 
     public static final String EXIT_STRING = "exit";
 
-    public static void execute(BufferedReader stdIn, BufferedReader reader, PrintWriter writer) throws IOException {
-        System.out.println("Escriba un mensaje para enviar al servidor");
-        String userInput = stdIn.readLine();
-        writer.println(userInput);
+    public static void execute(BufferedReader reader, PrintWriter writer) throws IOException {
+        // Generate a random string
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        StringBuilder randomString = new StringBuilder();
+        int length = 3; // Length of the random string
+        for (int i = 0; i < length; i++) {
+            int index = (int) (Math.random() * characters.length());
+            randomString.append(characters.charAt(index));
+        }
+        writer.println(randomString.toString());
 
         String response = reader.readLine();
         System.out.println("Respuesta del servidor: " + response);

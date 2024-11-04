@@ -13,15 +13,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Server {
+public class Server extends Thread {
 
     private static final int PORT = 3400;
     private static final List<Integer> ALLOWED_DELEGATES = new ArrayList<>(Arrays.asList(1, 4, 8, 32));
+    private static final int MAX_CLIENTS = 32;
 
     private boolean continueFlag = true;
+    private int nThreads;
 
-
-    public void launchWithConsole() {
+    public void setUpWithConsole() {
         Scanner scanner = new Scanner(System.in);
         boolean inMenu = true;
 
@@ -48,7 +49,6 @@ public class Server {
                         }
                     }
                     System.out.println("Inicializando Servidor...");
-                    start(nDelegates);
                     inMenu = false;
                     break;
                 case 0:
@@ -66,15 +66,20 @@ public class Server {
 
     }
 
-    private void generateKeys() {
-        
+    public void setUp(int nDelegates) {
+        this.nThreads = nDelegates;
+        generateKeys();
     }
 
-    public void start(int nDelegates) {
-        if (nDelegates == 1) {
+    private void generateKeys() {
+    }
+
+    @Override
+    public void run() {
+        if (nThreads == 1) {
             startMonothreadServer();
         } else {
-            startMultithreadServer(nDelegates);
+            startMultithreadServer();
         }
     }
 
@@ -82,10 +87,11 @@ public class Server {
         ServerSocket serverSocket = null;
         try {
             serverSocket = new ServerSocket(PORT);
+            int id = 0;
             while (continueFlag) {
                 System.out.println("Servidor Monothread esperando conexión");
                 Socket socket = serverSocket.accept();
-                System.out.println("Cliente conectado: " + socket.getInetAddress().getHostAddress());
+                System.out.println("Cliente " + (id + 1) + " conectado: " + socket.getInetAddress().getHostAddress());
 
                 PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
                 BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -95,8 +101,13 @@ public class Server {
                 writer.close();
                 reader.close();
                 socket.close();
+                id++;
+                if (id == MAX_CLIENTS) {
+                    continueFlag = false;
+                }
             }
             serverSocket.close();
+            System.out.println("Servidor finalizado, atendio a " + id + " clientes");
         } catch (IOException e) {
             System.out.println("Error al iniciar el servidor");
             e.printStackTrace();
@@ -105,7 +116,7 @@ public class Server {
 
     }
 
-    private void startMultithreadServer(int nThreads) {
+    private void startMultithreadServer() {
         ServerSocket serverSocket = null;
         ExecutorService threadPool = Executors.newFixedThreadPool(nThreads);
 
@@ -116,15 +127,15 @@ public class Server {
             while (continueFlag) {
                 System.out.println("Servidor Multithread esperando conexión");
                 Socket socket = serverSocket.accept();
-                System.out.println("Cliente conectado: " + socket.getInetAddress().getHostAddress());
+                System.out.println("Cliente " + (id + 1) + " conectado: " + socket.getInetAddress().getHostAddress());
 
                 ServerThread serverThread = new ServerThread(socket, id);
                 threadPool.execute(serverThread);
                 id++;
-                if (id == 4) {
+                if (id == MAX_CLIENTS) {
                     continueFlag = false;
                 }
-            }
+            };
 
         } catch (IOException e) {
             System.out.println("Error al iniciar el servidor");

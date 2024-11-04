@@ -1,12 +1,11 @@
 package client;
 
 import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 
-public class Client {
+public class Client extends Thread {
 
     public static final int PORT = 3400;
     public static final String HOST = "localhost";
@@ -32,11 +31,8 @@ public class Client {
         scanner.close();
     }
 
-    public void launch() {
-
-    }
-
-    private void start() {
+    @Override
+    public void run() {
         Socket socket = null;
         PrintWriter writer = null;
         BufferedReader reader = null;
@@ -46,10 +42,8 @@ public class Client {
             writer = new PrintWriter(socket.getOutputStream(), true);
             reader = new BufferedReader(new java.io.InputStreamReader(socket.getInputStream()));
 
-            BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
-            ClientProtocol.execute(stdIn, reader, writer);
+            ClientProtocol.execute(reader, writer);
 
-            stdIn.close();
             reader.close();
             writer.close();
             socket.close();
