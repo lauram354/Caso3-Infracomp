@@ -9,6 +9,10 @@ import java.net.Socket;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import asymmetric.Asymmetric;
+import symmetric.Symmetric;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -28,12 +32,13 @@ public class Server {
 
         while (inMenu) {
             System.out.println(
-                    "Bienvenido al SERVIDOR, seleccione una de las opciones: \n1. Generar pareja de llaves \n2. Ejecutar \n0. Salir");
+                    "\nBienvenido al SERVIDOR, seleccione una de las opciones: \n1. Generar pareja de llaves \n2. Ejecutar \n0. Salir");
             int option = scanner.nextInt();
             switch (option) {
                 case 1:
                     System.out.println("Generando pareja de llaves...");
-                    // TODO: Implementar generación de llaves y almacenarlas en 2 archivos
+                    Symmetric.generateKeys("AES");
+                    Asymmetric.generateKeys("RSA");
                     break;
                 case 2:
                     boolean check = true;
@@ -49,28 +54,28 @@ public class Server {
                     }
                     inMenu = false;
                     break;
-                    case 0:
+                case 0:
                     System.out.println("Saliendo...");
                     inMenu = false;
                     break;
-                    default:
+                default:
                     System.out.println("Opción no válida");
                     break;
-                }
-                
             }
+
+        }
         scanner.close();
 
     }
-    
+
     public void setUp(int nDelegates) {
         this.nThreads = nDelegates;
         generateKeys();
     }
-    
+
     private void generateKeys() {
     }
-    
+
     public void launch() {
         System.out.println("Inicializando Servidor...");
         if (nThreads == 1) {
@@ -132,7 +137,8 @@ public class Server {
                 if (id > MAX_CLIENTS) {
                     continueFlag = false;
                 }
-            };
+            }
+            ;
 
         } catch (IOException e) {
             System.out.println("Error al iniciar el servidor");
@@ -144,5 +150,5 @@ public class Server {
             }
         }
     }
-    
+
 }
