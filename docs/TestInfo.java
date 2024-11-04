@@ -1,3 +1,4 @@
+package docs;
 public class TestInfo {
 
     private String encryptionAlgorithm;

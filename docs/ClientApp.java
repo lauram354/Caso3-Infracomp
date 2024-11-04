@@ -1,3 +1,4 @@
+package docs;
 import client.Client;
 
 public class ClientApp {

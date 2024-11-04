@@ -1,3 +1,4 @@
+package docs;
 import server.Server;
 
 public class ServerApp {
