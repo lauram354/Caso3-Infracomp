@@ -14,49 +14,6 @@ public class TestRunnerApp {
 
     public static void main(String[] args) {
         createOutputFile();
-        for (int i = 0; i < CONCURRENT_CLIENTS.length; i++) {
-            int numClients = CONCURRENT_CLIENTS[i];
-            TestInfo testInfo = new TestInfo("cipher_method_placeholder", numClients);
-            long totalTime = 0;
-            for (int j = 0; j < NUM_TESTS; j++) {
-                long startTime = System.nanoTime();
-                runTest(numClients);
-                long endTime = System.nanoTime();
-                totalTime += endTime - startTime;
-            }
-            long avgTime = totalTime / NUM_TESTS;
-            double avgTimeMs = (double) avgTime / 1000000;
-            double avgTimeS = avgTimeMs / 1000;
-            testInfo.setAvgTimeNs(avgTime);
-            testInfo.setAvgTimeMs(avgTimeMs);
-            testInfo.setAvgTimeS(avgTimeS);
-            writeOutput(testInfo);
-        }
-    }
-
-    private static void runTest(int numClients) {
-        Server server = new Server();
-        server.setUp(numClients);
-        server.start();
-        Thread[] clients = new Thread[TOTAL_CLIENTS];
-        for (int i = 0; i < TOTAL_CLIENTS; i++) {
-            Client client = new Client();
-            clients[i] = client;
-            client.start();
-        }
-        for (int i = 0; i < TOTAL_CLIENTS; i++) {
-            try {
-                clients[i].join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-        try {
-            server.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        
     }
 
     public static void createOutputFile() {

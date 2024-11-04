@@ -13,11 +13,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Server extends Thread {
+public class Server {
 
     private static final int PORT = 3400;
     private static final List<Integer> ALLOWED_DELEGATES = new ArrayList<>(Arrays.asList(1, 4, 8, 32));
-    private static final int MAX_CLIENTS = 32;
+    private static final int MAX_CLIENTS = 8;
 
     private boolean continueFlag = true;
     private int nThreads;
@@ -36,46 +36,43 @@ public class Server extends Thread {
                     // TODO: Implementar generación de llaves y almacenarlas en 2 archivos
                     break;
                 case 2:
-                    int nDelegates = 0;
                     boolean check = true;
                     while (check) {
                         System.out.println(
                                 "Ingrese el numero de delegados concurretentes (1 para proceso iterativo, 4, 8, 32):");
-                        nDelegates = scanner.nextInt();
-                        if (ALLOWED_DELEGATES.contains(nDelegates)) {
+                        nThreads = scanner.nextInt();
+                        if (ALLOWED_DELEGATES.contains(nThreads)) {
                             check = false;
                         } else {
                             System.out.println("Número de delegados no permitido");
                         }
                     }
-                    System.out.println("Inicializando Servidor...");
                     inMenu = false;
                     break;
-                case 0:
+                    case 0:
                     System.out.println("Saliendo...");
                     inMenu = false;
                     break;
-                default:
+                    default:
                     System.out.println("Opción no válida");
                     break;
+                }
+                
             }
-
-        }
         scanner.close();
-        System.out.println("Servidor finalizado");
 
     }
-
+    
     public void setUp(int nDelegates) {
         this.nThreads = nDelegates;
         generateKeys();
     }
-
+    
     private void generateKeys() {
     }
-
-    @Override
-    public void run() {
+    
+    public void launch() {
+        System.out.println("Inicializando Servidor...");
         if (nThreads == 1) {
             startMonothreadServer();
         } else {
