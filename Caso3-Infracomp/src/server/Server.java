@@ -84,11 +84,11 @@ public class Server {
         ServerSocket serverSocket = null;
         try {
             serverSocket = new ServerSocket(PORT);
-            int id = 0;
+            int id = 1;
             while (continueFlag) {
                 System.out.println("Servidor Monothread esperando conexión");
                 Socket socket = serverSocket.accept();
-                System.out.println("Cliente " + (id + 1) + " conectado: " + socket.getInetAddress().getHostAddress());
+                System.out.println("Cliente " + id + " conectado: " + socket.getInetAddress().getHostAddress());
 
                 PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
                 BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -99,7 +99,7 @@ public class Server {
                 reader.close();
                 socket.close();
                 id++;
-                if (id == MAX_CLIENTS) {
+                if (id > MAX_CLIENTS) {
                     continueFlag = false;
                 }
             }
@@ -119,17 +119,17 @@ public class Server {
 
         try {
             serverSocket = new ServerSocket(PORT);
-            int id = 0;
+            int id = 1;
 
             while (continueFlag) {
                 System.out.println("Servidor Multithread esperando conexión");
                 Socket socket = serverSocket.accept();
-                System.out.println("Cliente " + (id + 1) + " conectado: " + socket.getInetAddress().getHostAddress());
+                System.out.println("Cliente " + id + " conectado: " + socket.getInetAddress().getHostAddress());
 
                 ServerThread serverThread = new ServerThread(socket, id);
                 threadPool.execute(serverThread);
                 id++;
-                if (id == MAX_CLIENTS) {
+                if (id > MAX_CLIENTS) {
                     continueFlag = false;
                 }
             };
