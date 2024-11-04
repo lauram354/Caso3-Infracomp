@@ -26,7 +26,7 @@ public class Server {
     private boolean continueFlag = true;
     private int nThreads;
 
-    public void setUpWithConsole() {
+    public void launchWithConsole() {
         Scanner scanner = new Scanner(System.in);
         boolean inMenu = true;
 
@@ -48,6 +48,7 @@ public class Server {
                         nThreads = scanner.nextInt();
                         if (ALLOWED_DELEGATES.contains(nThreads)) {
                             check = false;
+                            launch();
                         } else {
                             System.out.println("Número de delegados no permitido");
                         }
