@@ -36,22 +36,25 @@ public class Client extends Thread {
         Socket socket = null;
         PrintWriter writer = null;
         BufferedReader reader = null;
-        System.out.println("Conectando al servidor...");
-        try {
-            socket = new Socket(HOST, PORT);
-            writer = new PrintWriter(socket.getOutputStream(), true);
-            reader = new BufferedReader(new java.io.InputStreamReader(socket.getInputStream()));
+        boolean continueFlag = true;
+        while (continueFlag) {
+            try {
+                System.out.println("Conectando al servidor...");
+                socket = new Socket(HOST, PORT);
+                writer = new PrintWriter(socket.getOutputStream(), true);
+                reader = new BufferedReader(new java.io.InputStreamReader(socket.getInputStream()));
 
-            ClientProtocol.execute(reader, writer);
+                ClientProtocol.execute(reader, writer);
 
-            reader.close();
-            writer.close();
-            socket.close();
-        } catch (Exception e) {
-            System.out.println("Error al conectar con el servidor");
-            e.printStackTrace();
-            System.exit(-1);
+                reader.close();
+                writer.close();
+                socket.close();
+                continueFlag = false;
+            } catch (Exception e) {
+                System.out.println("Error al conectar con el servidor");
+                e.printStackTrace();
+                System.exit(-1);
+            }
         }
     }
-
 }

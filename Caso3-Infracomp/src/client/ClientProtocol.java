@@ -6,24 +6,31 @@ import java.io.PrintWriter;
 
 public class ClientProtocol {
 
-    public static final String EXIT_STRING = "exit";
-
     public static void execute(BufferedReader reader, PrintWriter writer) throws IOException {
-        // Generate a random string
-        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        StringBuilder randomString = new StringBuilder();
-        int length = 3; // Length of the random string
-        for (int i = 0; i < length; i++) {
-            int index = (int) (Math.random() * characters.length());
-            randomString.append(characters.charAt(index));
-        }
-        writer.println(randomString.toString());
+        requestKeys(reader, writer);
+        disconnect(writer);
+    }
 
+    private static void requestKeys(BufferedReader reader, PrintWriter writer) throws IOException {
+        System.out.println("Solicitando llaves al servidor");
+        publicKeyRequest(writer, reader);
+        symmetricKeyRequest(writer, reader);
+    }
+
+    private static void publicKeyRequest(PrintWriter writer, BufferedReader reader) throws IOException {
+        writer.println("publickey");
         String response = reader.readLine();
-        System.out.println("Respuesta del servidor: " + response);
-        if (response.equals(EXIT_STRING)) {
-            System.out.println("Cerrando conexión con el servidor");
-        }
+        System.out.println("Llave publica: " + response);
+    }
+
+    private static void symmetricKeyRequest(PrintWriter writer, BufferedReader reader) throws IOException {
+        writer.println("symmetrickey");
+        String response = reader.readLine();
+        System.out.println("Llave simetrica: " + response);
+    }
+
+    private static void disconnect(PrintWriter writer) {
+        writer.println("exit");
     }
 
 }

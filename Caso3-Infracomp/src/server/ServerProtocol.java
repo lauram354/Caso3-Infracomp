@@ -6,24 +6,35 @@ import java.io.PrintWriter;
 
 public class ServerProtocol {
 
-    public static final String EXIT_STRING = "exit";
-
     public static boolean execute(BufferedReader reader, PrintWriter writer) throws IOException {
         String inputLine;
         String outputLine;
 
         inputLine = reader.readLine();
         System.out.println("Entrada: " + inputLine);
-        if (inputLine.equals(EXIT_STRING)) {
-            writer.println(EXIT_STRING);
-            System.out.println("Cerrando conexión con el cliente");
+        
+        if (inputLine.equals("publickey")) {
+            sendPublicKey(writer);
+            return true;
+        } else if (inputLine.equals("symmetrickey")) {
+            sendSymmetricKey(writer);
+            return true;
+        } else if (inputLine.equals("exit")) {
+            outputLine = "exit";
+            writer.println(outputLine);
             return false;
         }
-
-        outputLine = inputLine + " procesada";
-        writer.println(outputLine);
-        System.out.println("Salida: " + outputLine);
         return true;
+    }
+
+    private static void sendPublicKey(PrintWriter writer) {
+        System.out.println("Enviando llave publica");
+        writer.println("publickey");
+    }
+
+    private static void sendSymmetricKey(PrintWriter writer) {
+        System.out.println("Enviando llave simetrica");
+        writer.println("symmetrickey");
     }
 
 }

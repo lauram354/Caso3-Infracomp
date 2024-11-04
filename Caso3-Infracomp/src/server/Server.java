@@ -13,14 +13,9 @@ import java.util.concurrent.Executors;
 import asymmetric.Asymmetric;
 import symmetric.Symmetric;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 public class Server {
 
     private static final int PORT = 3400;
-    private static final List<Integer> ALLOWED_DELEGATES = new ArrayList<>(Arrays.asList(1, 4, 8, 32));
     private static final int MAX_CLIENTS = 8;
 
     private boolean continueFlag = true;
@@ -36,17 +31,16 @@ public class Server {
             int option = scanner.nextInt();
             switch (option) {
                 case 1:
-                    System.out.println("Generando pareja de llaves...");
-                    Symmetric.generateKeys("AES");
-                    Asymmetric.generateKeys("RSA");
+                    System.out.println("Generando llaves...");
+                    generateKeys();
                     break;
                 case 2:
                     boolean check = true;
                     while (check) {
                         System.out.println(
-                                "Ingrese el numero de delegados concurretentes (1 para proceso iterativo, 4, 8, 32):");
+                                "Ingrese el numero de delegados concurrentes (1 para proceso iterativo, 4, 8, 32):");
                         nThreads = scanner.nextInt();
-                        if (ALLOWED_DELEGATES.contains(nThreads)) {
+                        if (nThreads > 0) {
                             check = false;
                             launch();
                         } else {
@@ -75,6 +69,8 @@ public class Server {
     }
 
     private void generateKeys() {
+        Symmetric.generateKeys("AES");
+        Asymmetric.generateKeys("RSA");
     }
 
     public void launch() {
@@ -99,7 +95,7 @@ public class Server {
                 PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
                 BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-                continueFlag = ServerProtocol.execute(reader, writer);
+                while (ServerProtocol.execute(reader, writer));
 
                 writer.close();
                 reader.close();
@@ -110,7 +106,7 @@ public class Server {
                 }
             }
             serverSocket.close();
-            System.out.println("Servidor finalizado, atendio a " + id + " clientes");
+            System.out.println("Servidor finalizado, atendio a " + (id - 1) + " clientes");
         } catch (IOException e) {
             System.out.println("Error al iniciar el servidor");
             e.printStackTrace();
@@ -139,8 +135,6 @@ public class Server {
                     continueFlag = false;
                 }
             }
-            ;
-
         } catch (IOException e) {
             System.out.println("Error al iniciar el servidor");
             e.printStackTrace();
