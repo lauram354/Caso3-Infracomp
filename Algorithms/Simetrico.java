@@ -7,6 +7,8 @@ import java.io.ObjectOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
@@ -59,7 +61,7 @@ public class Simetrico {
     }
 
     public static void generarValores() throws IOException, InterruptedException{
-        Process process = Runtime.getRuntime().exec("C:\\Users\\laura\\Downloads\\OpenSSL-1.1.1h_win32\\openssl dhparam -text 1024");
+        Process process = Runtime.getRuntime().exec("C:\\Users\\laura\\Downloads\\OpenSSL-1.1.1h_win32\\OpenSSL-1.1.1h_win32\\openssl dhparam -text 1024");
         BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
         String line;
         StringBuilder output = new StringBuilder();
@@ -69,7 +71,25 @@ public class Simetrico {
 	    }
 	    reader.close();
 	    process.waitFor();
+        
         System.out.println(output);
+
+        String regexP = "prime:\\s*([0-9a-fA-F:]+(\\s+[0-9a-fA-F:]+)*)?";
+        //"prime:\\s*([0-9a-fA-F:]+\\s*)*";
+        String regexG = "generator:\\*(\\d+)";
+
+        Pattern patternP = Pattern.compile(regexP);
+        Matcher matcherP = patternP.matcher(output);
+       
+        if (matcherP.find()) {
+            //for (int i=1; i < 3; i++){
+                String p = matcherP.group(1);
+                System.out.println("Valor de p: " + p);
+            //}
+            
+        } else {
+            System.out.println("No se encontró el valor de p.");
+        }
         
     }
 }
