@@ -19,11 +19,11 @@ public class ServerProtocol {
             System.out.println("Cerrando conexión con el cliente");
             return false;
         }
-        
+
         outputLine = inputLine + " procesada";
         writer.println(outputLine);
         System.out.println("Salida: " + outputLine);
         return true;
     }
-    
+
 }

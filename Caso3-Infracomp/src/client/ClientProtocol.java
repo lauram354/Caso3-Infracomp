@@ -19,5 +19,5 @@ public class ClientProtocol {
             System.out.println("Cerrando conexión con el servidor");
         }
     }
-    
+
 }
